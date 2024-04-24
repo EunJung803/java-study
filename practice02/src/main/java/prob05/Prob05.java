@@ -15,7 +15,7 @@ public class Prob05 {
 			// 정답 램덤하게 만들기
 			Random random = new Random();
 			int correctNumber = random.nextInt( 100 ) + 1;
-			System.out.println(correctNumber);
+//			System.out.println(correctNumber);
 			
 			System.out.println("수를 결정하였습니다. 맞추어 보세요");
 			System.out.println("1-100");
