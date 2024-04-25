@@ -7,7 +7,6 @@ public class Main {
 		Point point = new Point(10, 20);
 		
 //		Point point = new Point();
-//		
 //		point.setX(10);
 //		point.setY(20);
 		
@@ -16,10 +15,17 @@ public class Main {
 //		point.disappear();
 		point.show(true);
 		point.show(false);
+		
+		ColorPoint point2 = new ColorPoint(100, 200, "red");
+		drawColorPoint(point2);
 
 	}
 
 	private static void drawPoint(Point point) {
+		point.show();
+	}
+	
+	private static void drawColorPoint(ColorPoint point) {
 		point.show();
 	}
 	
