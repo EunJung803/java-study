@@ -15,13 +15,17 @@ public class GoodsApp {
 			String input = scanner.nextLine();
 			String[] splitInput = input.split(" ");
 			
-			goods[i].setName(splitInput[0]);
-			goods[i].setPrice(Integer.parseInt(splitInput[1]));
-			goods[i].setCountStock(Integer.parseInt(splitInput[2]));
+			String name = splitInput[0];
+			int price = Integer.parseInt(splitInput[1]);
+			int count = Integer.parseInt(splitInput[2]);
 			
+			goods[i] = new Goods(name, price, count);
 		}
 
 		// 상품 출력
+		for(int i=0; i<COUNT_GOODS; i++) {
+			goods[i].showInfo();
+		}
 		
 		// 자원정리
 		scanner.close();
