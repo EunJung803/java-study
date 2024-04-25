@@ -9,10 +9,21 @@ public class Goods {
 	private int countStock;
 	private int countSold;
 	
-	// 생성자 (내가 정의한)
+	// 생성자 오버로드
 	public Goods() {
+		
+	}
+ 	
+	// 생성자 (내가 정의한)
+	public Goods(String name, int price, int countStock, int countSold) {
 		// 클래스 이름 생략 가능
 		Goods.countOfGoods ++;
+		
+		// 인스턴스 변수 초기화
+		this.name = name;
+		this.price = price;
+		this.countStock = countStock;
+		this.countSold = countSold;
 	}
 	
 	// Getter, Setter
