@@ -8,6 +8,19 @@ public class Song {
 	private int track;
 	private int year;
 	
+	public Song(String title, String artist) {
+		this(title, "", "", artist, 0, 0);		// 자기 자신의 생성자를 호출하는 것 (기존에 만들어진 생성자를 사용!)
+		
+		this.title = title;
+		this.artist = artist;
+		
+//		System.out.println("some code1");
+//		System.out.println("some code2");
+//		System.out.println("some code3");
+//		System.out.println("some code4");
+//		System.out.println("some code5");
+	}
+	
 	public Song(String title, String album, String composer, String artitst, int track, int year) {
 		this.title = title;
 		this.album = album;
@@ -15,6 +28,12 @@ public class Song {
 		this.artist = artitst;
 		this.track = track;
 		this.year = year;
+		
+//		System.out.println("some code1");
+//		System.out.println("some code2");
+//		System.out.println("some code3");
+//		System.out.println("some code4");
+//		System.out.println("some code5");
 	}
 	
 	

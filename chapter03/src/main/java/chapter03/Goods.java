@@ -11,7 +11,7 @@ public class Goods {
 	
 	// 생성자 오버로드
 	public Goods() {
-		
+		this("", 0, 0, 0);
 	}
  	
 	// 생성자 (내가 정의한)
