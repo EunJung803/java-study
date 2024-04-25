@@ -12,6 +12,10 @@ public class Main {
 //		point.setY(20);
 		
 		drawPoint(point);
+		
+//		point.disappear();
+		point.show(true);
+		point.show(false);
 
 	}
 
