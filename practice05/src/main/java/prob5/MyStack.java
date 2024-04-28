@@ -37,15 +37,11 @@ public class MyStack {
 	}
 
 	public void push(String string) {
-		if(top < len-1) {
-			setTop(top+1);
-			stack[top] = string;
-		}
-		else {
+		if(top >= len-1) {
 			setStack(resize());
-			setTop(top+1);
-			stack[top] = string;
 		}
+		setTop(top+1);
+		stack[top] = string;
 	}
 
 	public String pop() throws MyStackException {
