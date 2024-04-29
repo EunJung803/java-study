@@ -22,5 +22,23 @@ public class Printer {
 		System.out.println(t);
 	}
 	
+	// 제너릭 오버로드
+	public <T> void println(T...ts) {
+		for(T tt : ts) {
+			System.out.println(tt);
+		}
+	}
+
+	// 가변파라미터
+	public int sum(Integer... nums) {
+		int s = 0;
+		for(Integer n : nums) {
+			s += n;
+		}
+		
+		return s;
+	}
+	
+	
 
 }
