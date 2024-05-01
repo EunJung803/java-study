@@ -52,7 +52,7 @@ public class TCPServer {
 					// String으로 엔코딩
 					String data = new String(buffer, 0, readByteCount, "UTF-8");
 					
-					System.out.println("[server] received:");
+					System.out.println("[server] received:" + data);
 					
 					// 6. 데이터 쓰기
 					os.write(data.getBytes("utf-8"));
