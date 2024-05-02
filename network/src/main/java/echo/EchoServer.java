@@ -54,7 +54,7 @@ public class EchoServer {
 				
 			} catch (SocketException e) {
 				
-				log("suddenly closed by client");
+				log("Socket Exception : " + e);
 				
 			} catch (IOException e) {
 				
