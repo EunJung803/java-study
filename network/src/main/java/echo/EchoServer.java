@@ -1,16 +1,9 @@
 package echo;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 
 public class EchoServer {
 	public static final int PORT = 3000;
@@ -24,52 +17,13 @@ public class EchoServer {
 			
 			serverSockert.bind(new InetSocketAddress("0.0.0.0", PORT), 10);
 			
-			Socket socket = serverSockert.accept();
+			log("starts....[port:" + PORT + "]");
 			
-			try {
-			
-				InetSocketAddress inetRemoteSocketAddress = (InetSocketAddress)socket.getRemoteSocketAddress();	// 캐스팅
-				String remoteHostAddress = inetRemoteSocketAddress.getAddress().getHostAddress();
-				int remotePort = inetRemoteSocketAddress.getPort();
-				log("connected by clinet[" + remoteHostAddress + ":" + remotePort + "]");
-				
-				PrintWriter pw = new PrintWriter(new OutputStreamWriter(socket.getOutputStream(), "utf-8"), true);	// true == 버퍼가 차면 오토 flush됨
-				BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream(), "utf-8"));
-				
-				
-				while(true) {
-					String data = br.readLine();		// blocking
-					
-					if(data == null) {
-						log("closed by client");
-						break;
-					}
-					
-					log("received:" + data);
-					
-					pw.println(data);		// OutputStreamWriter가 getBytes해서 해줌
-					
-				}
-				
-				
-			} catch (SocketException e) {
-				
-				log("Socket Exception : " + e);
-				
-			} catch (IOException e) {
-				
-				log("error : " + e);
-				
-			} finally {
-				try {
-					if(socket != null && !socket.isClosed()) {
-						socket.close();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			// 무한 루프 돌리기
+			while(true) {
+				Socket socket = serverSockert.accept();		// blocking (대기중)
+				new EchoRequestHandler(socket).start();;	// 새로운 요청을 처리하는 thread 생성 -> 실행
 			}
-				
 			
 		} catch (IOException e) {
 			
@@ -89,7 +43,7 @@ public class EchoServer {
 		
 	}
 	
-	private static void log(String message) {
+	public static void log(String message) {
 		System.out.println("[EchoServer] " + message);
 	}
 	
