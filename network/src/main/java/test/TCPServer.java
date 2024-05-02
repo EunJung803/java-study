@@ -41,10 +41,13 @@ public class TCPServer {
 				
 				// 5. 데이터 읽기
 				while(true) {
+//					System.out.println("try to read");
+					
 					byte[] buffer = new byte[256];
 					int readByteCount = is.read(buffer);	// blocking
 					
 					if(readByteCount == -1) {		// 정상적인 종료 (클라이언트에서 종료)
+						// Closed by client
 						System.out.println("[server] closed by client");	// 클라이언트가 정상적으로 종료 (close() 호출)
 						break;
 					}
@@ -52,18 +55,24 @@ public class TCPServer {
 					// String으로 엔코딩
 					String data = new String(buffer, 0, readByteCount, "UTF-8");
 					
-					System.out.println("[server] received:" + data);
+					System.out.println("[server] received : " + data);
 					
 					// 6. 데이터 쓰기
 					os.write(data.getBytes("utf-8"));
 					
+					try {
+						Thread.sleep(3000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 					
+//					os.write(data.getBytes("utf-8"));
 				}
 				
 				
 			} catch (SocketException e) {
 				
-				System.out.println("[server] suddenly closed by client");
+				System.out.println("[server] Socket Exception : " + e);
 				
 			} catch (IOException e) {
 				
