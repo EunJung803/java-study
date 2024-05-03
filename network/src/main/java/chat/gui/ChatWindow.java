@@ -107,12 +107,15 @@ public class ChatWindow {
 	
 	private void sendMessage() {
 		String message = textField.getText();
-		// 메세지 처리
-		String encodeMessage = Base64.getEncoder().encodeToString(message.getBytes());		// 메세지 Base64 Encoding
-		pw.println("MESSAGE:" + encodeMessage);
-		
-		textField.setText("");
-		textField.requestFocus();
+		if(!message.isEmpty()) {
+			// 메세지 처리
+			String encodeMessage = Base64.getEncoder().encodeToString(message.getBytes());		// 메세지 Base64 Encoding
+			
+			pw.println("MESSAGE:" + encodeMessage);
+			
+			textField.setText("");
+			textField.requestFocus();
+		}
 	}
 	
 	private void updateTextArea(String message) {

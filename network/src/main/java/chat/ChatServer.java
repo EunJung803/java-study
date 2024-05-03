@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatServer {
-	public static final int PORT = 3000;
+	public static final int PORT = 8080;
 	
 	public static void main(String[] args) {
 		List<PrintWriter> listWriters = new ArrayList<PrintWriter>();
 		ServerSocket serverSockert = null;
+		List<String> chatPeopleList = new ArrayList<String>();
 		
 		try {
 			// 서버 소켓 생성 & 바인딩
@@ -26,7 +27,7 @@ public class ChatServer {
 			// 요청 대기
 			while(true) {
 				Socket socket = serverSockert.accept();				// blocking (대기중)
-				new ChatServerThread(socket, listWriters).start();	// 새로운 요청을 처리하는 thread 생성 -> 실행
+				new ChatServerThread(socket, listWriters, chatPeopleList).start();	// 새로운 요청을 처리하는 thread 생성 -> 실행
 			}
 			
 		} catch (SocketException e) {

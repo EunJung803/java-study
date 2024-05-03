@@ -16,10 +16,12 @@ public class ChatServerThread extends Thread {
 	private String nickname;
 	private Socket socket;
 	private List<PrintWriter> listWriters;
+	private List<String> chatPeopleList;
 	
-	public ChatServerThread(Socket socket, List<PrintWriter> listWriters) {
+	public ChatServerThread(Socket socket, List<PrintWriter> listWriters, List<String> chatPeopleList) {
 		this.socket = socket;
 		this.listWriters = listWriters;
+		this.chatPeopleList = chatPeopleList;
 	}
 
 	@Override
@@ -52,12 +54,23 @@ public class ChatServerThread extends Thread {
 				String[] tokens = request.split(":");
 				
 				if("JOIN".equals(tokens[0])) {
-					doJoin(tokens[1], pw);
+					if(chatPeopleList.contains(tokens[1])) {
+						pw.println("SAMENAME");
+					}
+					else {
+						synchronized(chatPeopleList) {
+							chatPeopleList.add(tokens[1]);
+						}
+						doJoin(tokens[1], pw);
+					}
+					
 				} else if("MESSAGE".equals(tokens[0])) {
 					doMessage(tokens[1]);
+					
 				} else if("QUIT".equals(tokens[0])) {
 					doQuit(pw);
 					break;
+					
 				} else {
 				   ChatServer.log("에러:알수 없는 요청(" + tokens[0] + ")");
 				}
@@ -103,6 +116,10 @@ public class ChatServerThread extends Thread {
 	
 	private void doQuit(PrintWriter pw) {
 		removeWriter(pw);
+		
+		synchronized(chatPeopleList) {
+			chatPeopleList.remove(this.nickname);
+		}
 
 		if(nickname!=null) {
 			String data = this.nickname + "님이 퇴장하였습니다.";

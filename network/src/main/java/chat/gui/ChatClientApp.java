@@ -7,6 +7,8 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import chat.ChatServer;
@@ -30,23 +32,30 @@ public class ChatClientApp {
 				System.out.print(">>> ");
 				name = scanner.nextLine();
 				
-				if (!name.isEmpty()) {
-					break;
+				if(name.isEmpty()) {
+					System.out.println("대화명은 한글자 이상 입력해야 합니다.\n");
 				}
 				
-				System.out.println("대화명은 한글자 이상 입력해야 합니다.\n");
+				else {
+					// JOIN 프로토콜
+					pw.println("JOIN:" + name);
+					
+					String ack = br.readLine();
+
+					// JOIN 가능
+					if("JOIN:OK".equals(ack)) {
+						new ChatWindow(name, socket).show();	// 윈도우 열기
+						break;
+					}
+					// 닉네임 중복인 경우
+					if("SAMENAME".equals(ack)) {
+						System.out.println("중복된 닉네임 입니다. 다시 입력해주세요.");
+					}
+				}
+				
 			}
 			
 			scanner.close();
-			
-			// JOIN 프로토콜
-			pw.println("JOIN:" + name);
-			
-			String ack = br.readLine();
-			if("JOIN:OK".equals(ack)) {
-				new ChatWindow(name, socket).show();
-			}
-			
 			
 		} catch (SocketException e) {
 			log("" + e);
