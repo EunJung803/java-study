@@ -19,6 +19,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Base64;
 
 import chat.ChatServer;
 
@@ -30,8 +31,8 @@ public class ChatWindow {
 	private TextField textField;
 	private TextArea textArea;
 
-	Socket socket;
-	PrintWriter pw;
+	private Socket socket;
+	private PrintWriter pw;
 
 	public ChatWindow(String name, Socket socket) {
 		this.socket = socket;
@@ -107,7 +108,8 @@ public class ChatWindow {
 	private void sendMessage() {
 		String message = textField.getText();
 		// 메세지 처리
-		pw.println("MESSAGE:" + message);
+		String encodeMessage = Base64.getEncoder().encodeToString(message.getBytes());		// 메세지 Base64 Encoding
+		pw.println("MESSAGE:" + encodeMessage);
 		
 		textField.setText("");
 		textField.requestFocus();
@@ -157,9 +159,9 @@ public class ChatWindow {
 				}
 				
 			} catch (SocketException e) {
-				ChatServer.log("" + e);
+				ChatClientApp.log("" + e);
 			} catch (IOException e) {
-				ChatServer.log("" + e);
+				ChatClientApp.log("" + e);
 			} finally {
 				finish();
 			}

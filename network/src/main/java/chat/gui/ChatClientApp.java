@@ -49,10 +49,13 @@ public class ChatClientApp {
 			
 			
 		} catch (SocketException e) {
-			ChatServer.log("" + e);
+			log("" + e);
 		} catch (IOException e) {
-			ChatServer.log("" + e);
+			log("" + e);
 		}
+	}
+	public static void log(String message) {
+		System.out.println("[ChatClientApp] " + message);
 	}
 
 }

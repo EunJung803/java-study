@@ -7,6 +7,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.Scanner;
 
 // 메인스레드
@@ -56,7 +57,8 @@ public class ChatClient {
 			          break;
 			      } else {
 			          // 9. 메시지 처리    
-			    	  pw.println("MESSAGE:" + input);
+			    	  String encodeMessage = Base64.getEncoder().encodeToString(input.getBytes());		// 메세지 Base64 Encoding
+			    	  pw.println("MESSAGE:" + encodeMessage);
 			      }
 		      }
 		      else {

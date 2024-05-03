@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.Base64;
 import java.util.List;
 
 public class ChatServerThread extends Thread {
@@ -122,7 +123,11 @@ public class ChatServerThread extends Thread {
 	}
 
 	private void doMessage(String message) {
-		broadcast(this.nickname + " : " + message);
+		// 메세지 Base64 Decoding
+		byte[] decodedBytes = Base64.getDecoder().decode(message);
+        String decodedStr = new String(decodedBytes);
+        
+		broadcast(this.nickname + " : " + decodedStr);
 	}
 	
 	private void broadcast(String data) {
