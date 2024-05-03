@@ -11,21 +11,25 @@ import java.net.SocketException;
 public class TCPServer {
 
 	public static void main(String[] args) {
-		ServerSocket serverSockert = null;
+		ServerSocket serverSocket = null;
 		
 		try {
 			
 			// 1. Server Socket 생성
-			serverSockert = new ServerSocket();
+			serverSocket = new ServerSocket();
+			
+			// 1.1 FIN-WAIT2 상태가 -> TIME_WAIT 상태로 변경됨, 
+			// TIME_WAIT 상태에서도 소켓 포트 할당이 가능하도록 하기 위해
+			serverSocket.setReuseAddress(true);
 			
 			// 2. 소켓에 주소를 바인딩(Binding)
 			//	  Socket에 InetSocketAddress[InetAddress(IPAddress) + Port]를 바인딩 한다.
 			// 	  IPAddress : 0.0.0.0 -> 특정 호스트 IP를 바인딩하지 않는다 (== IP를 지정하지 않고 다 받도록 설정)
 			// 	  여기서 10은 백로그 큐 개수
-			serverSockert.bind(new InetSocketAddress("0.0.0.0", 3000), 10);
+			serverSocket.bind(new InetSocketAddress("0.0.0.0", 3000), 10);
 			
 			// 3. Accept
-			Socket socket = serverSockert.accept();		// 코드가 더 진행안됨 (blocking) -> 클라이언트의 요청을 기다림
+			Socket socket = serverSocket.accept();		// 코드가 더 진행안됨 (blocking) -> 클라이언트의 요청을 기다림
 			
 			try {
 			
@@ -58,6 +62,13 @@ public class TCPServer {
 					System.out.println("[server] received : " + data);
 					
 					// 6. 데이터 쓰기
+					// SO_TIMEOUT 테스트
+//					try {
+//						Thread.sleep(3000);
+//					} catch (InterruptedException e) {
+//						e.printStackTrace();
+//					}
+					
 					os.write(data.getBytes("utf-8"));
 					
 					try {
@@ -96,8 +107,8 @@ public class TCPServer {
 		} finally {
 			
 			try {
-				if(serverSockert != null && !serverSockert.isClosed()) {	// 서버 소켓은 이렇게 확인 (소켓도 닫고, 소켓 안에 있는 스트림도 닫고)
-					serverSockert.close();
+				if(serverSocket != null && !serverSocket.isClosed()) {	// 서버 소켓은 이렇게 확인 (소켓도 닫고, 소켓 안에 있는 스트림도 닫고)
+					serverSocket.close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
